@@ -32,7 +32,7 @@ const App = () => {
 
   function countUndone(obj) {
     let count = 0;
-    if (getObjCount(obj) > 0){
+    if (getObjCount(obj) > 0) {
       Object.entries(tasksList).map((taskArray) => {
         if (!taskArray[1].status) count += 1
       });
@@ -42,27 +42,27 @@ const App = () => {
 
   return (
     <>
+      <StatusBar style="auto" />
       <View
+        // main container
         style={{
           marginTop: 30,
-          marginLeft: 15,
-          marginRight: 15,
+          marginLeft: 10,
+          marginRight: 10,
           display: 'flex',
           flexDirection: 'column',
           gap: 16
         }}
       >
-        <StatusBar style="auto" />
-        <View>
-          <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Hello</Text>
-        </View>
         <View
+          //Top
           style={{
             display: 'flex',
             flexDirection: 'column',
             gap: 12
           }}
         >
+          <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Hello</Text>
           <TextInput
             placeholder="Enter task..."
             value={newTask}
@@ -78,17 +78,23 @@ const App = () => {
             onPress={() => addTask(newTask)}
             disabled={!newTask}
           />
+          <Button
+            onPress={() => setTasksList({})}
+            title="Clear All"
+            color='#333'
+            disabled={!getObjCount(tasksList)}
+          />
         </View>
         <View
+          // Bottom
           style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: 10
+            gap: 10,
+            marginTop: 50
           }}
         >
-          <Text
-            style={{ fontSize: 20, fontWeight: 'bold' }}
-          >
+          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
             Tasks: {countUndone(tasksList)} pending
           </Text>
           <View
@@ -96,6 +102,7 @@ const App = () => {
               display: 'flex',
               flexDirection: 'column',
               gap: 10,
+              padding: 8,
             }}
           >
             {tasksList && Object.entries(tasksList).map((taskArray) => (
@@ -106,18 +113,15 @@ const App = () => {
                   display: 'flex',
                   flexDirection: 'row',
                   alignItems: 'center',
-                  borderWidth: 2,
+                  borderWidth: 1.5,
                   padding: 12,
-                  borderColor: taskArray[1].status ? '#eee' : '#5555ff',
+                  borderColor: taskArray[1].status ? '#eee' : '#000',
                   borderRadius: 8,
                   justifyContent: 'space-between',
+                  backgroundColor: taskArray[1].status ? '#eee' : '#fff'
                 }}
               >
-                <Text
-                  style={{
-                    color: taskArray[1].status ? '#ccc' : '#000'
-                  }}
-                >
+                <Text style={{ color: taskArray[1].status ? '#ccc' : '#000' }}>
                   {taskArray[1].taskName}
                 </Text>
                 {taskArray[1].status &&
@@ -125,22 +129,15 @@ const App = () => {
                     style={{
                       fontSize: 8,
                       textTransform: "uppercase",
-                      fontWeight: 'bold'
+                      fontWeight: 'bold',
+                      color: '#000'
                     }}
                   >
-                    &#9989; completed
+                    &#10003; completed
                   </Text>
                 }
               </Pressable>
             ))}
-          </View>
-          <View>
-            <Button
-              onPress={() => setTasksList({})}
-              title="Clear All"
-              color='#333'
-              disabled={!getObjCount(tasksList)}
-            />
           </View>
         </View>
       </View>
