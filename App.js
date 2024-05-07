@@ -13,7 +13,7 @@ const App = () => {
   }
 
   function addTask(task) {
-    const tmpId = Object.keys(tasksList) ? Object.keys(tasksList).length + 1 : 0;
+    const tmpId = getObjCount(tasksList);
     const tmpTask = new Task(task, tasksList.length + 1)
     setTasksList({ ...tasksList, [tmpId]: tmpTask });
     setNewTask('');
@@ -26,11 +26,18 @@ const App = () => {
   }
 
   function getObjCount(obj) {
+    if (!Object.keys(obj)) return 0;
     return Object.keys(obj).length;
   }
 
-  function getTaskStats(tasksList) {
-    return getObjCount(tasksList);
+  function countUndone(obj) {
+    let count = 0;
+    if (getObjCount(obj) > 0){
+      Object.entries(tasksList).map((taskArray) => {
+        if (!taskArray[1].status) count += 1
+      });
+    }
+    return count;
   }
 
   return (
@@ -38,8 +45,8 @@ const App = () => {
       <View
         style={{
           marginTop: 30,
-          marginLeft: 8,
-          marginRight: 8,
+          marginLeft: 15,
+          marginRight: 15,
           display: 'flex',
           flexDirection: 'column',
           gap: 16
@@ -80,9 +87,9 @@ const App = () => {
           }}
         >
           <Text
-            style={{ fontSize: 24, fontWeight: 'bold' }}
+            style={{ fontSize: 20, fontWeight: 'bold' }}
           >
-            Tasks: {getTaskStats(tasksList)}
+            Tasks: {countUndone(tasksList)} pending
           </Text>
           <View
             style={{
@@ -99,11 +106,11 @@ const App = () => {
                   display: 'flex',
                   flexDirection: 'row',
                   alignItems: 'center',
-                  borderWidth: 1,
+                  borderWidth: 2,
                   padding: 12,
-                  borderColor: '#ccc',
+                  borderColor: taskArray[1].status ? '#eee' : '#5555ff',
+                  borderRadius: 8,
                   justifyContent: 'space-between',
-                  borderRadius: 8
                 }}
               >
                 <Text
@@ -131,7 +138,7 @@ const App = () => {
             <Button
               onPress={() => setTasksList({})}
               title="Clear All"
-              color='red'
+              color='#333'
               disabled={!getObjCount(tasksList)}
             />
           </View>
