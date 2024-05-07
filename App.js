@@ -33,8 +33,8 @@ const App = () => {
   function countUndone(obj) {
     let count = 0;
     if (getObjCount(obj) > 0) {
-      Object.entries(tasksList).map((taskArray) => {
-        if (!taskArray[1].status) count += 1
+      Object.values(tasksList).map((task) => {
+        if (!task.status) count += 1
       });
     }
     return count;
