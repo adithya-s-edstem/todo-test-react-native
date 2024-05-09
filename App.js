@@ -58,7 +58,7 @@ export default function App() {
             onPress={clearTasks}
             title="Clear All"
             color="#333"
-            disabled={!tasksList}
+            disabled={!tasksList.length}
           />
         </View>
         <TasksList tasksList={tasksList} toggleTask={toggleTask} />
