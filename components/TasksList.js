@@ -1,13 +1,12 @@
 import { View, Text, Pressable } from "react-native";
-import { getObjCount } from "../utils/getObjCount";
 
 export function TasksList({ tasksList, toggleTask }) {
-  function countUndone(obj) {
+  function countUndone(arr) {
     let count = 0;
-    if (getObjCount(obj) > 0) {
-      Object.values(tasksList).map((task) => {
-        if (!task.status) count += 1
-      });
+    if (arr.length > 0) {
+      arr.map((item) => {
+        if (!item.status) count += 1
+      })
     }
     return count;
   }
@@ -32,35 +31,35 @@ export function TasksList({ tasksList, toggleTask }) {
           padding: 8,
         }}
       >
-        {tasksList && Object.entries(tasksList).map((taskArray) => (
-          <TaskItem taskArray={taskArray} toggleTask={toggleTask} />
+        {tasksList?.map((task) => (
+          <TaskItem key={task.id} task={task} toggleTask={toggleTask} />
         ))}
       </View>
     </View>
   )
 }
 
-function TaskItem({ taskArray, toggleTask }) {
+function TaskItem({ task, toggleTask }) {
   return (
     <Pressable
-      key={taskArray[0]}
-      onPress={() => toggleTask(taskArray[0])}
+      key={task.id}
+      onPress={() => toggleTask(task.id)}
       style={{
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         borderWidth: 1.5,
         padding: 12,
-        borderColor: taskArray[1].status ? '#eee' : '#000',
+        borderColor: task.status ? '#eee' : '#000',
         borderRadius: 8,
         justifyContent: 'space-between',
-        backgroundColor: taskArray[1].status ? '#eee' : '#fff'
+        backgroundColor: task.status ? '#eee' : '#fff'
       }}
     >
-      <Text style={{ color: taskArray[1].status ? '#ccc' : '#000' }}>
-        {taskArray[1].taskName}
+      <Text style={{ color: task.status ? '#ccc' : '#000' }}>
+        {task.taskName}
       </Text>
-      {taskArray[1].status &&
+      {task.status &&
         <Text
           style={{
             fontSize: 8,

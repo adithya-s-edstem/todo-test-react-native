@@ -3,31 +3,32 @@ import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import { AddTask } from "./components/AddTask";
 import { TasksList } from "./components/TasksList";
-import { getObjCount } from "./utils/getObjCount";
 
 export default function App() {
-  const [tasksList, setTasksList] = useState({});
+  const [tasksList, setTasksList] = useState([]);
 
   class Task {
-    constructor(taskName) {
+    constructor(id, taskName) {
+      this.id = id;
       this.taskName = taskName;
       this.status = false;
     }
   }
 
-  function addTask(task) {
-    const tmpId = getObjCount(tasksList);
-    const tmpTask = new Task(task, tasksList.length + 1)
-    setTasksList({ ...tasksList, [tmpId]: tmpTask });
+  function addTask(taskName) {
+    const newTaskId = tasksList.length + 1;
+    const newTask = new Task(newTaskId + 1, taskName)
+    setTasksList([...tasksList, newTask]);
   }
 
   function clearTasks() {
-    setTasksList({});
+    setTasksList([]);
   }
 
   function toggleTask(taskId) {
-    const newTasksList = { ...tasksList };
-    newTasksList[taskId].status = !tasksList[taskId].status;
+    const taskIndex = tasksList.findIndex((task) => task.id === taskId);
+    const newTasksList = [...tasksList];
+    newTasksList[taskIndex].status = !tasksList[taskIndex].status;
     setTasksList(newTasksList);
   }
 
@@ -57,7 +58,7 @@ export default function App() {
             onPress={clearTasks}
             title="Clear All"
             color="#333"
-            disabled={!getObjCount(tasksList)}
+            disabled={!tasksList}
           />
         </View>
         <TasksList tasksList={tasksList} toggleTask={toggleTask} />
