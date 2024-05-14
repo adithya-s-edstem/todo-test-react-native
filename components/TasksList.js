@@ -2,13 +2,10 @@ import { View, Text, Pressable } from "react-native";
 
 export function TasksList({ tasksList, toggleTask }) {
   function countUndone(arr) {
-    let count = 0;
-    if (arr.length > 0) {
-      arr.map((item) => {
-        if (!item.status) count += 1
-      })
-    }
-    return count;
+    return arr.reduce((count, item) => {
+      if (!item.status) count += 1;
+      return count;
+    }, 0);
   }
 
   return (
