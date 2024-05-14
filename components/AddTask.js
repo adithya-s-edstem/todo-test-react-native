@@ -6,20 +6,8 @@ import { selectTodo } from "../redux/selectors";
 
 export function AddTask() {
   const [newTask, setNewTask] = useState('');
-
-  const taskLength = useSelector(selectTodo).length;
-
   const dispatch = useDispatch();
-
-  function handleAdd() {
-    dispatch(addTask(newTask));
-    setNewTask('');
-  }
-
-  function handleClearAll() {
-    dispatch(clearAllTasks());
-  }
-
+  
   return (
     <View
       style={{
@@ -40,13 +28,16 @@ export function AddTask() {
         }} />
       <Button
         title="Add task"
-        onPress={handleAdd}
+        onPress={() => {
+          dispatch(addTask(newTask));
+          setNewTask('');
+        }}
         disabled={!newTask} />
       <Button
-        onPress={handleClearAll}
+        onPress={() => dispatch(clearAllTasks())}
         title="Clear All"
         color="#333"
-        disabled={!taskLength} />
+        disabled={!Object.keys(useSelector(selectTodo)).length} />
     </View>
   )
 }

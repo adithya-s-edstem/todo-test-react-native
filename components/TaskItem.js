@@ -5,14 +5,10 @@ import { toggleTask } from '../redux/slices';
 export function TaskItem({ task }) {
   const dispatch = useDispatch();
 
-  function handleToggle() {
-    dispatch(toggleTask(task.id));
-  }
-
   return (
     <Pressable
       key={task.id}
-      onPress={handleToggle}
+      onPress={() => dispatch(toggleTask(task.id))}
       style={{
         display: 'flex',
         flexDirection: 'row',

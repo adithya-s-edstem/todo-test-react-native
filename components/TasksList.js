@@ -6,8 +6,8 @@ import { TaskItem } from './TaskItem';
 export function TasksList() {
   const todoList = useSelector(selectTodo);
 
-  function countUndone(arr) {
-    return arr.reduce((count, item) => {
+  function countUndone(obj) {
+    return Object.values(obj).reduce((count, item) => {
       if (!item.status) count += 1;
       return count;
     }, 0);
@@ -29,12 +29,13 @@ export function TasksList() {
           display: 'flex',
           flexDirection: 'column',
           gap: 10,
-          padding: 8,
+          padding: 8
         }}
       >
-        {todoList?.map((task) => (
-          <TaskItem key={task.id} task={task} />
-        ))}
+        {Object.entries(todoList)
+          .map((task) => ({id: task[0], ...task[1]}))
+          .map((taskObj) => <TaskItem key={taskObj.id} task={taskObj} />)
+        }
       </View>
     </View>
   )

@@ -1,21 +1,22 @@
+import 'react-native-get-random-values';
 import { combineSlices, createSlice } from "@reduxjs/toolkit";
+import { v4 } from 'uuid';
 
 const todoSlice = createSlice({
   name: 'todo',
-  initialState: [],
+  initialState: {},
   reducers: {
     addTask: (state, action) => {
-      return [
+      return {
         ...state,
-        { id: state.length + 1, status: false, taskName: action.payload }
-      ];
+        [v4()]: { taskName: action.payload, status: false }
+      };
     },
     toggleTask: (state, action) => {
-      const taskIndex = state.findIndex((task) => task.id === action.payload);
-      state[taskIndex].status = !state[taskIndex].status;
+      state[action.payload].status = !state[action.payload].status;
     },
     clearAllTasks: () => {
-      return [];
+      return {};
     }
   }
 })
